@@ -36,6 +36,12 @@
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 // @import '@ionic/angular/css/palettes/dark.system.css';
 
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
 :root {
 	--primary: #8b78ff;
+}
+
+html {
+	font-family: 'Outfit', sans-serif;
 }
