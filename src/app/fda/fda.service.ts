@@ -1,0 +1,211 @@
+import { resource, Service, signal } from '@angular/core';
+import {
+	addDoc,
+	collection,
+	deleteDoc,
+	doc,
+	getDocs,
+	Timestamp,
+	updateDoc
+} from 'firebase/firestore';
+import { format, isAfter, parse } from 'date-fns';
+import { tz } from '@date-fns/tz';
+import { auth, db } from '../firebase';
+import lottie from 'lottie-web';
+
+@Service()
+export class FdaService {
+	isIdle = signal(true);
+	isPending = signal(false);
+	isError = signal(false);
+	isSuccess = signal(false);
+
+	fdaResource = resource({
+		loader: async () => {
+			const ref = collection(db, 'fda_history');
+
+			const docSnaps = await getDocs(ref);
+
+			const docs = docSnaps.docs.map((doc) => doc.data());
+
+			return docs;
+		}
+	});
+
+	async verify(query: string) {
+		const q = query.trim();
+
+		const url = new URL('https://verification.fda.gov.ph/api/search');
+		url.searchParams.append('q', q);
+
+		const todayDate = new Date();
+
+		const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+		let formattedVerificationDate = format(todayDate, "MMMM d',' yyyy 'at' p", {
+			in: tz(clientTimeZone)
+		});
+
+		let data = null,
+			status;
+
+		try {
+			this.isPending.update(() => true);
+			this.isIdle.update(() => false);
+			const response = await fetch(url, {
+				method: 'GET',
+				headers: {
+					'User-Agent':
+						'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36',
+					Accept: 'application/json, text/plain, */*',
+					'Accept-Language': 'en-US,en;q=0.9',
+					Origin: 'https://verification.fda.gov.ph',
+					Referer: 'https://verification.fda.gov.ph/',
+					Connection: 'keep-alive'
+				}
+			});
+
+			const result = await response.json();
+
+			console.log('response', response);
+			console.log('result', result);
+
+			if (result.error) {
+				throw new Error('FDA_SERVER_ERROR');
+			}
+
+			if (
+				result.cosmetic_NN?.length <= 0 &&
+				result.cdrr?.length <= 0 &&
+				result.fdafoodproducts?.length <= 0
+			) {
+				throw new Error('NO_RECORD_FOUND');
+			}
+
+			if (result.cosmetic_NN?.length > 0) {
+				data = result.cosmetic_NN[0];
+			} else if (result.cdrr?.length > 0) {
+				data = result.cdrr[0];
+			} else if (result.fdafoodproducts?.length > 0) {
+				data = result.fdafoodproducts[0];
+			}
+
+			status = {
+				code: 200,
+				text: 'OK'
+			};
+
+			const productValidityDate = parse(
+				data.NOTIFICATION_VALIDITY,
+				'dd MMMM yyyy',
+				new Date()
+			);
+
+			const isExpired = isAfter(todayDate, productValidityDate);
+			const formattedProduct = data.PRODUCT_NAME.trim()
+				.split(' ')
+				.map((str: string) => {
+					str = str.toLowerCase();
+
+					return str !== 'and' ? str[0].toUpperCase() + str.slice(1) : str;
+				})
+				.join(' ');
+
+			const formattedProductValidityDate = format(productValidityDate, "MMMM d',' yyyy");
+
+			data = {
+				product: formattedProduct,
+				company: data.COMPANY_NAME,
+				notification_number: data.ACCOUNTCODE,
+				is_expired: isExpired,
+				product_validity_date: formattedProductValidityDate,
+				verification_check_date: formattedVerificationDate
+			};
+
+			this.isSuccess.update(() => true);
+
+			console.log(data);
+		} catch (error: any) {
+			console.log(error.name);
+
+			status = {
+				code: 500,
+				text: 'Something went wrong. Please try again later.'
+			};
+
+			if (error.name === 'AbortError') {
+				status = {
+					code: 500,
+					text: 'The operation was discontinued. Please try again if needed.'
+				};
+			}
+
+			if (error.message === 'NO_RECORD_FOUND') {
+				status = {
+					code: 200,
+					text: 'the request went through, but no record was found.'
+				};
+
+				data = {
+					name: query,
+					verification_check_date: formattedVerificationDate,
+					is_invalid: true
+				};
+			}
+
+			if (error.message === 'FDA_SERVER_ERROR') {
+				status = {
+					code: 500,
+					text: 'FDA servers are unavailable. Please try again later.'
+				};
+			}
+
+			this.isError.update(() => true);
+		} finally {
+			this.isPending.update(() => false);
+			this.isIdle.update(() => true);
+		}
+
+		if (auth.currentUser && status.code !== 500) {
+			await this.save(auth.currentUser.uid, data);
+		}
+
+		return {
+			data,
+			status
+		};
+	}
+
+	async get() {
+		const ref = collection(db, 'fda_history');
+
+		const docSnaps = await getDocs(ref);
+
+		const docs = docSnaps.docs.map((doc) => doc.data());
+
+		return docs;
+	}
+
+	async save(data: any, uid: string) {
+		const ref = collection(db, 'users', uid, 'fda_history');
+		await addDoc(ref, {
+			...data,
+			createdAt: Timestamp.now(),
+			search_key: data?.product ?? data?.name ?? null
+		});
+	}
+
+	async update(data: any, uid: string) {
+		const ref = collection(db, 'users', uid, 'fda_history');
+
+		const docRef = doc(ref, uid);
+		await updateDoc(docRef, data);
+	}
+
+	async delete(uid: string) {
+		const ref = collection(db, 'users', uid, 'fda_history');
+
+		const docRef = doc(ref, uid);
+		await deleteDoc(docRef);
+	}
+}
