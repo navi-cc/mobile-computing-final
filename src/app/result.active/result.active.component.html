@@ -1,0 +1,87 @@
+<div class="flex flex-col gap-y-2">
+	<button
+		(click)="handleBack()"
+		class="flex items-center self-start ion-activatable ripple"
+	>
+		<ion-icon src="assets/svg/chevron-left.svg"> </ion-icon>
+		<span>Back</span>
+
+		<ion-ripple-effect></ion-ripple-effect>
+	</button>
+
+	<div class="flex flex-col items-center border border-black/30 rounded p-4">
+		<div class="flex flex-col gap-y-1.5 items-center text-green-500">
+			<ion-icon class="text-8xl" src="assets/svg/badge-check.svg"> </ion-icon>
+			<span>Active FDA Notification</span>
+		</div>
+
+		<div class="text-black/50 text-center text-xs w-80">
+			This product has an active Certificate of Product Notification (CPN) with the FDA
+			Philippines
+		</div>
+	</div>
+
+	<div class="border border-green-500 rounded p-4">
+		<div class="flex items-center gap-x-1 text-xs">
+			<ion-icon class="text-green-500" src="assets/svg/tag.svg"> </ion-icon>
+			<span>Product</span>
+		</div>
+
+		<span class="text-xs font-semibold capitalize">
+			{{ result().product }}
+		</span>
+	</div>
+
+	<div class="border border-black/30 rounded p-4">
+		<div class="flex items-center gap-x-1 text-xs">
+			<ion-icon class="text-green-500" src="assets/svg/work.svg"> </ion-icon>
+			<span>Company</span>
+		</div>
+
+		<span class="text-xs font-semibold uppercase">
+			{{ result().company }}
+		</span>
+	</div>
+
+	<div class="border border-black/30 rounded p-4">
+		<div class="flex items-center gap-x-1 text-xs">
+			<ion-icon class="text-green-500" src="assets/svg/task.svg"> </ion-icon>
+			<span>Notification No.</span>
+		</div>
+
+		<span class="text-green-500 text-xs font-semibold capitalize">
+			{{ result().notification_number }}
+		</span>
+	</div>
+
+	<div class="border border-black/30 rounded p-4">
+		<div class="flex items-center gap-x-1 text-xs">
+			<ion-icon class="text-green-500" src="assets/svg/calendar-check.svg"> </ion-icon>
+			<span>Valid Until</span>
+		</div>
+
+		<span class="text-xs font-semibold capitalize">
+			{{ result().product_validity_date }}
+		</span>
+	</div>
+
+	<div class="border border-black/30 rounded p-4">
+		<div class="flex items-center gap-x-1 text-xs">
+			<ion-icon class="text-green-500" src="assets/svg/calendar-clock.svg"> </ion-icon>
+			<span>Verification Checked</span>
+		</div>
+
+		<span class="text-xs font-semibold capitalize">
+			{{ result().verification_check_date }}
+		</span>
+	</div>
+
+	<button
+		(click)="handleBack()"
+		class="ion-activatable ripple bg-green-500 rounded! py-4!"
+	>
+		<span class="text-white">Check Another Product</span>
+
+		<ion-ripple-effect></ion-ripple-effect>
+	</button>
+</div>
