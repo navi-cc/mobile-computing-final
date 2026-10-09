@@ -1,0 +1,11 @@
+<ion-content>
+	<div class="main-wrapper">
+		@if (result().is_invalid) {
+		<app-result-invalid [result]="result()" />
+		} @if (result().is_expired) {
+		<app-result-expired [result]="result()" />
+		} @if (!result().is_expired) {
+		<app-result-active [result]="result()" />
+		}
+	</div>
+</ion-content>
