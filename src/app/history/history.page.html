@@ -1,13 +1,9 @@
-<ion-header [translucent]="true">
-	<ion-toolbar>
-		<ion-title> History </ion-title>
-	</ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-	<ion-header collapse="condense">
-		<ion-toolbar>
-			<ion-title size="large">History</ion-title>
-		</ion-toolbar>
-	</ion-header>
+<ion-content>
+	<div class="main-wrapper">
+		<div class="flex flex-col gap-y-4.5">
+			@for (item of fdaQuery.data(); track $index) {
+			<app-history-card [docId]="$index" />
+			}
+		</div>
+	</div>
 </ion-content>

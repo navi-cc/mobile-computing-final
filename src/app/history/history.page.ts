@@ -1,12 +1,35 @@
-import { Component } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import {
+	IonHeader,
+	IonToolbar,
+	IonTitle,
+	IonContent,
+	IonIcon,
+	IonRippleEffect,
+	IonActionSheet,
+	ActionSheetController,
+	AlertController
+} from '@ionic/angular';
+import { HoldGestureDirective } from '../hold-gesture';
+import { FdaService } from '../fda/fda.service';
+import {
+	injectMutation,
+	injectQuery,
+	QueryClient
+} from '@tanstack/angular-query-experimental';
+import { HistoryCardComponent } from '../history.card/history.card.component';
 
 @Component({
 	selector: 'app-tab2',
 	templateUrl: 'history.page.html',
 	styleUrls: ['history.page.scss'],
-	imports: [IonHeader, IonToolbar, IonTitle, IonContent]
+	imports: [IonContent, HistoryCardComponent]
 })
 export class HistoryPage {
-	constructor() {}
+	fdaService = inject(FdaService);
+
+	readonly fdaQuery = injectQuery(() => ({
+		queryFn: async () => this.fdaService.get(),
+		queryKey: ['items']
+	}));
 }
