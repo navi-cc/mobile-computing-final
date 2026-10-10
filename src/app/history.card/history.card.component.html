@@ -1,0 +1,20 @@
+<div
+	class="flex ion-activatable ripple items-center gap-x-2 border rounded border-black/20 p-4"
+	appHoldGesture
+	(holdEmitted)="presentActionSheet()"
+	[holdDuration]="700"
+>
+	<ion-icon class="text-green-500 text-xl" src="assets/svg/shield-check-duotone.svg">
+	</ion-icon>
+
+	<div class="flex flex-col text-xs">
+		<span>Selsun Blue</span>
+		<span>Active FDA Notification</span>
+	</div>
+
+	<div class="ml-50">
+		<ion-icon class="text-black/40 text-xs" src="assets/svg/arrow-right.svg"> </ion-icon>
+	</div>
+
+	<ion-ripple-effect></ion-ripple-effect>
+</div>
