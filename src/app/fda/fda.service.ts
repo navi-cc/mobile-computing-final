@@ -1,4 +1,4 @@
-import { resource, Service, signal } from '@angular/core';
+import { resource, Service } from '@angular/core';
 import {
 	addDoc,
 	collection,
@@ -11,15 +11,9 @@ import {
 import { format, isAfter, parse } from 'date-fns';
 import { tz } from '@date-fns/tz';
 import { auth, db } from '../firebase';
-import lottie from 'lottie-web';
 
 @Service()
 export class FdaService {
-	isIdle = signal(true);
-	isPending = signal(false);
-	isError = signal(false);
-	isSuccess = signal(false);
-
 	fdaResource = resource({
 		loader: async () => {
 			const ref = collection(db, 'fda_history');
@@ -50,8 +44,6 @@ export class FdaService {
 			status;
 
 		try {
-			this.isPending.update(() => true);
-			this.isIdle.update(() => false);
 			const response = await fetch(url, {
 				method: 'GET',
 				headers: {
@@ -122,8 +114,6 @@ export class FdaService {
 				verification_check_date: formattedVerificationDate
 			};
 
-			this.isSuccess.update(() => true);
-
 			console.log(data);
 		} catch (error: any) {
 			console.log(error.name);
@@ -159,11 +149,6 @@ export class FdaService {
 					text: 'FDA servers are unavailable. Please try again later.'
 				};
 			}
-
-			this.isError.update(() => true);
-		} finally {
-			this.isPending.update(() => false);
-			this.isIdle.update(() => true);
 		}
 
 		if (auth.currentUser && status.code !== 500) {
@@ -181,7 +166,14 @@ export class FdaService {
 
 		const docSnaps = await getDocs(ref);
 
-		const docs = docSnaps.docs.map((doc) => doc.data());
+		const docs = docSnaps.docs.map((doc) => {
+			const data = doc.data();
+
+			return {
+				...data,
+				id: doc.id
+			};
+		});
 
 		return docs;
 	}
