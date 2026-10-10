@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular';
+import { IonContent, IonIcon } from '@ionic/angular';
+import { auth } from '../firebase';
 
 @Component({
 	selector: 'app-tab3',
 	templateUrl: 'profile.page.html',
 	styleUrls: ['profile.page.scss'],
-	imports: [IonHeader, IonToolbar, IonTitle, IonContent]
+	imports: [IonIcon, IonContent]
 })
 export class ProfilePage {
+	// TO DO
 	constructor() {}
 }

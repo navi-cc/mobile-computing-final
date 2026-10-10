@@ -1,13 +1,18 @@
-<ion-header [translucent]="true">
-	<ion-toolbar>
-		<ion-title> Profile </ion-title>
-	</ion-toolbar>
-</ion-header>
+<ion-content>
+	<div class="main-wrapper">
+		<div
+			class="flex flex-col gap-y-4.5 items-center border border-black/20 px-20 py-10 rounded"
+		>
+			<ion-icon
+				class="text-[var(--primary)] text-2xl border border-black/20 rounded-full p-4"
+				src="assets/svg/user-solid.svg"
+			>
+			</ion-icon>
 
-<ion-content [fullscreen]="true">
-	<ion-header collapse="condense">
-		<ion-toolbar>
-			<ion-title size="large">Profile</ion-title>
-		</ion-toolbar>
-	</ion-header>
+			<div class="flex flex-col items-center">
+				<span>User 123</span>
+				<span>user123@gmail.com</span>
+			</div>
+		</div>
+	</div>
 </ion-content>
