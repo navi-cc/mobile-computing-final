@@ -1,0 +1,31 @@
+<ion-content>
+	<div class="main-wrapper">
+		<div class="fda">
+			<div class="title-wrapper">
+				<div id="shield-icon">
+					<ion-icon src="assets/svg/shield-check-duotone.svg"> </ion-icon>
+				</div>
+				<span>FDA Verification Tool</span>
+			</div>
+
+			@if (fdaVerifyMutation.isIdle()) {
+			<div class="btn-input-wrapper">
+				@if (inputForm.query().touched() && inputForm.query().invalid()) { @for (error of
+				inputForm.query().errors(); track error) {
+				<span id="input-error"> {{error.message}} </span>
+				} }
+
+				<input
+					[formField]="inputForm.query"
+					placeholder="Enter product, notification no..."
+					id="fda-input"
+					type="text"
+				/>
+				<button (click)="handleVerify()" id="verify-btn" type="button">Verify</button>
+			</div>
+			} @if (fdaVerifyMutation.isPending()) {
+			<ng-lottie [options]="options" />
+			}
+		</div>
+	</div>
+</ion-content>
