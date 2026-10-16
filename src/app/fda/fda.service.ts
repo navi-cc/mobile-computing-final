@@ -152,7 +152,7 @@ export class FdaService {
 		}
 
 		if (auth.currentUser && status.code !== 500) {
-			await this.save(auth.currentUser.uid, data);
+			await this.save(data, auth.currentUser.uid);
 		}
 
 		return {
@@ -162,7 +162,7 @@ export class FdaService {
 	}
 
 	async get() {
-		const ref = collection(db, 'fda_history');
+		const ref = collection(db, 'users', auth.currentUser?.uid as string, 'fda_history');
 
 		const docSnaps = await getDocs(ref);
 
@@ -187,17 +187,18 @@ export class FdaService {
 		});
 	}
 
-	async update(data: any, uid: string) {
+	async update(data: any, id: string, uid: string) {
 		const ref = collection(db, 'users', uid, 'fda_history');
 
-		const docRef = doc(ref, uid);
+		const docRef = doc(ref, id);
 		await updateDoc(docRef, data);
 	}
 
 	async delete(uid: string) {
-		const ref = collection(db, 'users', uid, 'fda_history');
+		const ref = collection(db, 'users', auth.currentUser?.uid as string, 'fda_history');
 
 		const docRef = doc(ref, uid);
+
 		await deleteDoc(docRef);
 	}
 }
