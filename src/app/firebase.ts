@@ -7,6 +7,8 @@ const firebaseConfig: FirebaseOptions = {
 	apiKey: environment.firebase.apiKey,
 	projectId: environment.firebase.projectId,
 	appId: environment.firebase.appId,
+	storageBucket: environment.firebase.storageBucket,
+	messagingSenderId: environment.firebase.messagingSenderId,
 	authDomain: environment.firebase.authDomain
 };
 
