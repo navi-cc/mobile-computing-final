@@ -29,7 +29,13 @@ export class HistoryPage {
 	fdaService = inject(FdaService);
 
 	readonly fdaQuery = injectQuery(() => ({
-		queryFn: async () => this.fdaService.get(),
+		queryFn: async () => {
+			const items = await this.fdaService.get();
+
+			console.log('items', items);
+
+			return items;
+		},
 		queryKey: ['items']
 	}));
 }

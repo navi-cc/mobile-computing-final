@@ -1,6 +1,7 @@
 <div
 	class="flex ion-activatable ripple items-center gap-x-2 border rounded border-black/20 p-4"
 	appHoldGesture
+	(click)="handleViewResult()"
 	(holdEmitted)="presentActionSheet()"
 	[holdDuration]="700"
 >
@@ -8,8 +9,20 @@
 	</ion-icon>
 
 	<div class="flex flex-col text-xs">
-		<span>Selsun Blue</span>
-		<span>Active FDA Notification</span>
+		<span> {{ doc().search_key }} </span>
+		<span>
+			@if (doc().is_invalid) {
+				Invalid
+			}
+
+			@if (doc().is_expired) {
+				Expired
+			}
+
+			@if (!doc().is_expired) {
+				Valid
+			}
+		</span>
 	</div>
 
 	<div class="ml-50">
