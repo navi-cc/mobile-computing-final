@@ -8,11 +8,28 @@ export const routes: Routes = [
 		children: [
 			{
 				path: 'fda',
-				loadComponent: () => import('../fda/fda.page').then((m) => m.FdaPage)
+				loadComponent: () => import('../fda/fda.page').then((m) => m.FdaPage),
+				children: [
+					{
+						path: 'result/:resultId',
+						loadComponent: () => import('../result/result.page').then((m) => m.ResultPage)
+					},
+					{
+						path: '',
+						loadComponent: () =>
+							import('../fda.home/fda.home.page').then((m) => m.FdaHomePage)
+					}
+				]
 			},
 			{
 				path: 'history',
-				loadComponent: () => import('../history/history.page').then((m) => m.HistoryPage)
+				loadComponent: () => import('../history/history.page').then((m) => m.HistoryPage),
+				children: [
+					{
+						path: ':docId',
+						loadComponent: () => import('../result/result.page').then((m) => m.ResultPage)
+					}
+				]
 			},
 			{
 				path: 'profile',
