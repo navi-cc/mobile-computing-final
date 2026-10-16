@@ -10,6 +10,7 @@
  */
 
 /* Core CSS required for Ionic components to work properly */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 @import '@ionic/angular/css/core.css';
 
 /* Basic CSS for apps built with Ionic */
@@ -24,6 +25,7 @@
 @import '@ionic/angular/css/text-alignment.css';
 @import '@ionic/angular/css/text-transformation.css';
 @import '@ionic/angular/css/flex-utils.css';
+@import 'tailwindcss';
 
 /**
  * Ionic Dark Mode
@@ -36,12 +38,28 @@
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 // @import '@ionic/angular/css/palettes/dark.system.css';
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
-
 :root {
 	--primary: #8b78ff;
+	--border-radius: 4px;
 }
 
 html {
-	font-family: 'Outfit', sans-serif;
+	--ion-default-font: 'Outfit', sans-serif !important;
+}
+
+.svg-base {
+	height: 1em;
+	width: 1em;
+}
+
+.main-wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+}
+
+.ripple {
+	position: relative;
+	overflow: hidden;
 }
