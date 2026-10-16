@@ -1,5 +1,5 @@
 <ion-content>
-	<div class="main-wrapper">
+	<div class="main-wrapper flex-col gap-y-4">
 		<div
 			class="flex flex-col gap-y-4.5 items-center border border-black/20 px-20 py-10 rounded"
 		>
@@ -10,9 +10,19 @@
 			</ion-icon>
 
 			<div class="flex flex-col items-center">
-				<span>User 123</span>
-				<span>user123@gmail.com</span>
+				<span> {{userService.getUserName()}} </span>
+				<span> {{userService.getUserEmail()}} </span>
 			</div>
 		</div>
+
+		<button
+			(click)="handleSignOut()"
+			class="flex items-center justify-center gap-x-1.5 ion-activatable ripple bg-(--primary) rounded! py-4! px-6!"
+		>
+			<span class="text-white">Sign out</span>
+
+			@if (signOutMutation.isPending()) {<app-spinner />}
+			<ion-ripple-effect></ion-ripple-effect>
+		</button>
 	</div>
 </ion-content>
