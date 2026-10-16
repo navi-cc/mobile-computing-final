@@ -7,6 +7,8 @@ export const environment = {
 		projectId: 'mobile-computing-final-91539',
 		apiKey: 'AIzaSyBnGFqi6fDu2pNpOLzTEhbmcXrAJoesrCM',
 		appId: '1:774698770336:web:2b78d5d2d04b5910af0ec5',
+		storageBucket: 'mobile-computing-final-91539.firebasestorage.app',
+		messagingSenderId: '774698770336',
 		authDomain: 'mobile-computing-final-91539.firebaseapp.com'
 	},
 	production: false
