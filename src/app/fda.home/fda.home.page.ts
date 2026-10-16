@@ -12,7 +12,7 @@ import { FdaService } from '../fda/fda.service';
 import { AnimationOptions, LottieComponent } from 'ngx-lottie';
 import { AnimationItem } from 'lottie-web';
 import { Router } from '@angular/router';
-import { injectMutation } from '@tanstack/angular-query-experimental';
+import { injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
 
 @Component({
 	selector: 'app-fda.home',
@@ -22,6 +22,7 @@ import { injectMutation } from '@tanstack/angular-query-experimental';
 })
 export class FdaHomePage {
 	private router = inject(Router);
+	readonly queryClient = inject(QueryClient);
 	fdaService = inject(FdaService);
 	fdaVerifyMutation = injectMutation(() => ({
 		mutationFn: async (q: string) => this.fdaService.verify(q),
@@ -31,6 +32,11 @@ export class FdaHomePage {
 					data: JSON.stringify(result.data)
 				}
 			});
+
+			this.queryClient.invalidateQueries({ queryKey: ['items'] });
+		},
+		onError: (err) => {
+			console.log('error =>', err);
 		}
 	}));
 	inputModel = signal({

@@ -8,7 +8,7 @@
 				<span>FDA Verification Tool</span>
 			</div>
 
-			@if (fdaVerifyMutation.isIdle()) {
+			@if (!fdaVerifyMutation.isPending()) {
 			<div class="btn-input-wrapper">
 				@if (inputForm.query().touched() && inputForm.query().invalid()) { @for (error of
 				inputForm.query().errors(); track error) {
