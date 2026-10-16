@@ -1,0 +1,57 @@
+<ion-content>
+	<div class="main-wrapper">
+		<div class="flex flex-col gap-y-4">
+			<span class="font-bold text-(--primary)">Sign in</span>
+
+			<div class="flex flex-col gap-y-1.5">
+				@if (signInForm.email().touched() && signInForm.email().invalid()) { @for (error
+				of signInForm.email().errors(); track error) {
+				<span class="text-red-500"> {{error.message}} </span>} }
+
+				<ion-input
+					[formField]="signInForm.email"
+					label="Email"
+					type="email"
+					label-placement="floating"
+					fill="outline"
+					placeholder="Enter email"
+				/>
+
+				@if (signInForm.password().touched() && signInForm.password().invalid()) { @for
+				(error of signInForm.password().errors(); track error) {
+				<span class="text-red-500"> {{error.message}} </span>} }
+				<ion-input
+					[formField]="signInForm.password"
+					label="Password"
+					label-placement="floating"
+					fill="outline"
+					type="password"
+					placeholder="Enter password"
+				/>
+			</div>
+
+			@if (authMutation.isError()) {
+			<span class="text-red-500"> {{authMutationError()}} </span>}
+			<button
+				(click)="handleSignIn()"
+				class="flex items-center justify-center gap-x-1.5 ion-activatable ripple bg-(--primary) rounded! py-4!"
+			>
+				<span class="text-white">Sign in</span>
+
+				@if (authMutation.isPending()) {<app-spinner />}
+				<ion-ripple-effect></ion-ripple-effect>
+			</button>
+
+			<div>
+				<span
+					>Don't have an account?
+					<span
+						(click)="handleGoSignUp()"
+						class="text-(--primary) cursor-pointer hover:bg-(--primary)/20 transition-color duration-300"
+						>Sign Up</span
+					></span
+				>
+			</div>
+		</div>
+	</div>
+</ion-content>
