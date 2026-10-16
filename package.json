@@ -17,6 +17,12 @@
 		"prepare": "husky",
 		"add:android": "ionic capacitor add android"
 	},
+	"lint-staged": {
+		"*.ts": [
+			"ng lint app --lint-file-patterns",
+			"prettier -w"
+		]
+	},
 	"private": true,
 	"dependencies": {
 		"@angular/common": "22.1.7",
@@ -31,10 +37,17 @@
 		"@capacitor/haptics": "8.0.2",
 		"@capacitor/keyboard": "8.0.5",
 		"@capacitor/status-bar": "8.0.3",
+		"@date-fns/tz": "^1.5.0",
 		"@ionic/angular": "^9.0.0",
+		"@tanstack/angular-query-experimental": "^5.104.1",
+		"date-fns": "^4.4.0",
+		"firebase": "^12.19.0",
 		"ionicons": "^8.1.0",
+		"lottie-web": "^5.13.0",
+		"ngx-lottie": "^22.0.0",
 		"rxjs": "~7.8.0",
-		"tslib": "^2.3.0"
+		"tslib": "^2.3.0",
+		"zod": "^4.6.5"
 	},
 	"devDependencies": {
 		"@angular/build": "22.1.8",
@@ -43,11 +56,15 @@
 		"@angular/language-service": "22.1.7",
 		"@capacitor/cli": "8.5.2",
 		"@ionic/angular-toolkit": "^13.0.0",
+		"@tailwindcss/postcss": "^4.1.12",
 		"angular-eslint": "22.0.0",
 		"eslint": "^10.10.0",
 		"husky": "^9.1.7",
 		"jsdom": "^26.0.0",
+		"lint-staged": "^17.6.0",
+		"postcss": "^8.5.3",
 		"prettier": "3.9.9",
+		"tailwindcss": "^4.1.12",
 		"typescript": "~6.0.0",
 		"typescript-eslint": "^8.61.0",
 		"vitest": "~4.0.18"
