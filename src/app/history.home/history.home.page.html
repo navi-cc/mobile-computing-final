@@ -1,0 +1,7 @@
+<div class="main-wrapper">
+	<div class="flex flex-col gap-y-4.5">
+		@for (item of fdaQuery.data(); track $index) {
+		<app-history-card [doc]="item" [docId]="item.id" />
+		}
+	</div>
+</div>
