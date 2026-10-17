@@ -45,6 +45,10 @@ export class AuthService {
 		}
 	}
 
+	isAuthenticated() {
+		return auth.currentUser !== null;
+	}
+
 	async signOut() {
 		try {
 			await signOut(auth);
