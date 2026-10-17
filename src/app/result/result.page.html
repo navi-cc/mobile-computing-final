@@ -4,7 +4,7 @@
 		<app-result-invalid [result]="result()" />
 		} @if (result().is_expired) {
 		<app-result-expired [result]="result()" />
-		} @if (!result().is_expired) {
+		} @if (!result().is_expired && !result().is_invalid) {
 		<app-result-active [result]="result()" />
 		}
 	</div>
