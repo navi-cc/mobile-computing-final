@@ -28,6 +28,11 @@ export const routes: Routes = [
 					{
 						path: ':docId',
 						loadComponent: () => import('../result/result.page').then((m) => m.ResultPage)
+					},
+					{
+						path: '',
+						loadComponent: () =>
+							import('../history.home/history.home.page').then((m) => m.HistoryHomePage)
 					}
 				]
 			},
